@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Site</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS básico para o layout do site */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('fundo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        /* Estilo do cabeçalho e do menu de navegação */
+        header {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: rgba(68, 68, 68, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(85, 85, 85, 0.8);
+        }
+
+        /* Estilo para telas menores */
+        @media (max-width: 768px) {
+            nav .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            nav ul.showing {
+                display: flex;
+            }
+        }
+
+        /* Estilo do conteúdo principal */
+        main {
+            padding: 20px;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Estilo do texto dentro das seções de conteúdo */
+        .content h2, .content p {
+            color: #fff;
+        }
+
+        /* Estilo para a seção de fotos */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .moment {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .moment-item {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+        }
+
+        .moment-item img, .moment-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .moment-item .caption {
+            text-align: center;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        /* Estilo do rodapé */
+        footer {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Estilo para a seção de redes sociais */
+        .social-section {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(243, 243, 243, 0.8);
+        }
+
+        .social-section .photos {
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+        }
+
+        .social-section .photos img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .social-section .instagram-link {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-section .instagram-link img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        /* Estilo para a seção da Bíblia */
+        .bible-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .bible-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bible-testament {
+            margin-bottom: 40px;
+        }
+
+        .bible-testament h3 {
+            margin-bottom: 10px;
+        }
+
+        .bible-books {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .bible-book {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .bible-chapters {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .bible-book.open .bible-chapters {
+            display: block;
+        }
+
+        .bible-chapter {
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+
+        .bible-verses {
+            margin-left: 40px;
+            display: none;
+        }
+
+        .bible-chapter.open .bible-verses {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Meu Site</h1>
+    </header>
+    <nav>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <ul id="menu">
+            <li><a href="#home" class="menu-link" data-target="home">Home</a></li>
+            <li><a href="#palavra-do-dia" class="menu-link" data-target="palavra-do-dia">Palavra do Dia</a></li>
+            <li><a href="#nossas-fotos" class="menu-link" data-target="nossas-fotos">Nossas Fotos</a></li>
+            <li><a href="#programacoes" class="menu-link" data-target="programacoes">Programações</a></li>
+            <li><a href="#sobre" class="menu-link" data-target="sobre">Sobre</a></li>
+            <li><a href="#biblia" class="menu-link" data-target="biblia">Bíblia</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div id="home" class="content active">
+            <h2>Bem-vindo ao Site do Geração Eleita</h2>
+            <p>Aqui vamos estar mostrando todos os assuntos referentes ao conjunto Geração Eleita, da Igreja Assembleia de Deus ministério Criação de Deus. Nosso Pastor Presidente é o Clóvis de Carvalho Bassani</p>
+        </div>
+        <div id="palavra-do-dia" class="content">
+            <h2>Palavra do Dia</h2>
+            <textarea id="versiculo" readonly style="width: 100%; height: 100px;"></textarea>
+            <br>
+            <button id="gerar-versiculo">Gerar Versículo</button>
+            <button id="enviar-whatsapp">Enviar para o WhatsApp</button>
+        </div>
+        <div id="nossas-fotos" class="content">
+            <h2>Nossas Fotos</h2>
+            <div class="gallery">
+                <div class="moment">
+                    <div class="moment-item">
+                        <img src="foto1.jpg" alt="Foto 1">
+                        <div class="caption">Legenda da Foto 1</div>
+                    </div>
+                    <div class="moment-item">
+                        <video controls>
+                            <source src="video1.mp4" type="video/mp4">
+                            Seu navegador não suporta o elemento de vídeo.
+                        </video>
+                        <div class="caption">Legenda do Vídeo 1</div>
+                    </div>
+                </div>
+                <div class="moment">
+                    <div class="moment-item">
+                        <img src="foto2.jpg" alt="Foto 2">
+                        <div class="caption">Legenda da Foto 2</div>
+                    </div>
+                    <div class="moment-item">
+                        <video controls>
+                            <source src="video2.mp4" type="video/mp4">
+                            Seu navegador não suporta o elemento de vídeo.
+                        </video>
+                        <div class="caption">Legenda do Vídeo 2</div>
+                    </div>
+                </div>
+                <!-- Adicione mais momentos aqui -->
+            </div>
+        </div>
+        <div id="programacoes" class="content">
+            <h2>Programações</h2>
+            <p>Detalhes das próximas programações.</p>
+        </div>
+        <div id="biblia" class="content bible-section">
+            <h2>Bíblia</h2>
+            <div class="bible-testament" id="antigo-testamento">
+                <h3>Antigo Testamento</h3>
+                <div class="bible-books">
+                    <div class="bible-book">
+                        <div class="bible-book-title" onclick="toggleChapters(this)">Gênesis</div>
+                        <div class="bible-chapters">
+                            <div class="bible-chapter" onclick="toggleVerses(this, 1)">Capítulo 1</div>
+                            <div class="bible-chapter" onclick="toggleVerses(this, 2)">Capítulo 2</div>
+                            <!-- Adicione todos os capítulos e versículos aqui -->
+                        </div>
+                    </div>
+                    <!-- Adicione todos os livros do Antigo Testamento aqui -->
+                </div>
+            </div>
+            <div class="bible-testament" id="novo-testamento">
+                <h3>Novo Testamento</h3>
+                <div class="bible-books">
+                    <div class="bible-book">
+                        <div class="bible-book-title" onclick="toggleChapters(this)">Mateus</div>
+                        <div class="bible-chapters">
+                            <div class="bible-chapter" onclick="toggleVerses(this, 1)">Capítulo 1</div>
+                            <div class="bible-chapter" onclick="toggleVerses(this, 2)">Capítulo 2</div>
+                            <!-- Adicione todos os capítulos e versículos aqui -->
+                        </div>
+                    </div>
+                    <!-- Adicione todos os livros do Novo Testamento aqui -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Meu Site. Todos os direitos reservados.</p>
+    </footer>
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('menu').classList.toggle('showing');
+        });
+
+        const menuLinks = document.querySelectorAll('.menu-link');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const target = this.dataset.target;
+                document.querySelectorAll('.content').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        function toggleChapters(element) {
+            element.parentElement.classList.toggle('open');
+        }
+
+        function toggleVerses(element, chapterNumber) {
+            const verses = [
+                { chapter: 1, verses: ['No princípio, criou Deus os céus e a terra.', 'E a terra era sem forma e vazia; e havia trevas sobre a face do abismo. E o Espírito de Deus se movia sobre a face das águas.'] },
+                { chapter: 2, verses: ['Assim, os céus, a terra e todo o seu exército foram acabados.', 'E havendo Deus acabado no dia sétimo a sua obra, que fizera, descansou no sétimo dia de toda a sua obra, que tinha feito.'] }
+            ];
+            const chapter = verses.find(c => c.chapter === chapterNumber);
+            let versesHtml = '';
+            if (chapter) {
+                chapter.verses.forEach(verse => {
+                    versesHtml += `<div class="bible-verse">${verse}</div>`;
+                });
+            }
+            element.querySelector('.bible-verses').innerHTML = versesHtml;
+            element.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+----
+
+{
+  "antigo_testamento": {
+    "Gênesis": {
+      "1": [
+        "No princípio, criou Deus os céus e a terra.",
+        "E a terra era sem forma e vazia; e havia trevas sobre a face do abismo. E o Espírito de Deus se movia sobre a face das águas."
+      ],
+      "2": [
+        "Assim, os céus, a terra e todo o seu exército foram acabados.",
+        "E havendo Deus acabado no dia sétimo a sua obra, que fizera, descansou no sétimo dia de toda a sua obra, que tinha feito."
+      ]
+    },
+    "Êxodo": {
+      "1": [
+        "Estes são os nomes dos filhos de Israel, que entraram no Egito com Jacó; cada um entrou com a sua casa:",
+        "Rúben, Simeão, Levi, e Judá."
+      ]
+    }
+  },
+  "novo_testamento": {
+    "Mateus": {
+      "1": [
+        "Livro da geração de Jesus Cristo, filho de Davi, filho de Abraão.",
+        "Abraão gerou a Isaque; e Isaque gerou a Jacó; e Jacó gerou a Judá e a seus irmãos."
+      ],
+      "2": [
+        "E, tendo nascido Jesus em Belém de Judéia, no tempo do rei Herodes, eis que uns magos vieram do oriente a Jerusalém.",
+        "Dizendo: Onde está aquele que é nascido rei dos judeus? porque vimos a sua estrela no oriente, e viemos a adorá-lo."
+      ]
+    }
+  }
+}
+
+
+
+------
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Site</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS básico para o layout do site */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('fundo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        /* Estilo do cabeçalho e do menu de navegação */
+        header {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: rgba(68, 68, 68, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(85, 85, 85, 0.8);
+        }
+
+        /* Estilo para telas menores */
+        @media (max-width: 768px) {
+            nav .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            nav ul.showing {
+                display: flex;
+            }
+        }
+
+        /* Estilo do conteúdo principal */
+        main {
+            padding: 20px;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Estilo do texto dentro das seções de conteúdo */
+        .content h2, .content p {
+            color: #fff;
+        }
+
+        /* Estilo para a seção de fotos */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .moment {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .moment-item {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+        }
+
+        .moment-item img, .moment-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .moment-item .caption {
+            text-align: center;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        /* Estilo do rodapé */
+        footer {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Estilo para a seção de redes sociais */
+        .social-section {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(243, 243, 243, 0.8);
+        }
+
+        .social-section .photos {
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+        }
+
+        .social-section .photos img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .social-section .instagram-link {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-section .instagram-link img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        /* Estilo para a seção da Bíblia */
+        .bible-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .bible-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bible-testament {
+            margin-bottom: 40px;
+        }
+
+        .bible-testament h3 {
+            margin-bottom: 10px;
+        }
+
+        .bible-books {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .bible-book {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .bible-chapters {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .bible-book.open .bible-chapters {
+            display: block;
+        }
+
+        .bible-chapter {
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+
+        .bible-verses {
+            margin-left: 40px;
+            display: none;
+        }
+
+        .bible-chapter.open .bible-verses {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Meu Site</h1>
+    </header>
+    <nav>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <ul id="menu">
+            <li><a href="#home" class="menu-link" data-target="home">Home</a></li>
+            <li><a href="#palavra-do-dia" class="menu-link" data-target="palavra-do-dia">Palavra do Dia</a></li>
+            <li><a href="#nossas-fotos" class="menu-link" data-target="nossas-fotos">Nossas Fotos</a></li>
+            <li><a href="#programacoes" class="menu-link" data-target="programacoes">Programações</a></li>
+            <li><a href="#sobre" class="menu-link" data-target="sobre">Sobre</a></li>
+            <li><a href="#biblia" class="menu-link" data-target="biblia">Bíblia</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div id="home" class="content active">
+            <h2>Bem-vindo ao Site do Geração Eleita</h2>
+            <p>Aqui vamos estar mostrando todos os assuntos referentes ao conjunto Geração Eleita, da Igreja Assembleia de Deus ministério Criação de Deus. Nosso Pastor Presidente é o Clóvis de Carvalho
+-----
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bíblia Completa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .book, .chapter {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul id="book-list"></ul>
+    </nav>
+    <main id="content"></main>
+    <script>
+        async function loadBible() {
+            const response = await fetch('data/biblia.json');
+            const bible = await response.json();
+            return bible;
+        }
+
+        function displayBooks(bible) {
+            const bookList = document.getElementById('book-list');
+            bible.forEach((book, index) => {
+                const li = document.createElement('li');
+                li.textContent = book.book;
+                li.onclick = () => displayChapters(book);
+                bookList.appendChild(li);
+            });
+        }
+
+        function displayChapters(book) {
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+            book.chapters.forEach((chapter, index) => {
+                const chapterDiv = document.createElement('div');
+                chapterDiv.classList.add('chapter');
+                const chapterTitle = document.createElement('h2');
+                chapterTitle.textContent = `${book.book} - Capítulo ${index + 1}`;
+                chapterDiv.appendChild(chapterTitle);
+                chapter.forEach((verse, verseIndex) => {
+                    const verseP = document.createElement('p');
+                    verseP.textContent = `${verseIndex + 1}. ${verse}`;
+                    chapterDiv.appendChild(verseP);
+                });
+                content.appendChild(chapterDiv);
+            });
+        }
+
+        loadBible().then(displayBooks);
+    </script>
+</body>
+</html>
+
+
+---
+
